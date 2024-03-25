@@ -47,60 +47,11 @@ Avo.configure do |config|
   config.current_user_method = :current_user
 
   config.main_menu = -> {
-    section I18n.t("avo.dashboards"), icon: "app/assets/images/demo-adjustments.svg" do
-      dashboard :dashy, visible: -> { true }
-
-      group "All dashboards", visible: false, collapsable: true do
-        all_dashboards
-      end
-    end
-
-    section "Resources", icon: "academic-cap.svg", collapsable: true, collapsed: false do
-      group "Company", collapsable: true do
-        resource :projects
-        resource :team, visible: -> {
-          authorize current_user, Team, "index?", raise_exception: false
-        }
-        resource :team_membership, visible: -> {
-          authorize current_user, TeamMembership, "index?", raise_exception: false
-
-          false
-        }
-        resource :reviews
-      end
-
-      group "People", collapsable: true do
-        # resource "UserResource", visible: -> do
-
-        # end
-        # authorize current_user, User, "index?", raise_exception: false
-        resource "User"
-        resource :people
-        resource :spouses
-      end
-
-      group "Education", collapsable: true do
-        resource :course
-        resource :course_link
-      end
-
-      group "Blog", collapsable: true do
-        resource :posts
-        resource :comments
-      end
-
-      group "Other", collapsable: true, collapsed: true do
-        resource :fish, label: "Fishies"
-      end
-    end
-
-    section "Tools", icon: "heroicons/outline/finger-print", collapsable: true, collapsed: false do
-      all_tools
-    end
-
-    group do
-      link "Avo", path: "https://avohq.io"
-      link "Google", path: "https://google.com", target: :_blank
+    section "All resources", icon: "app/assets/images/demo-adjustments.svg" do
+      resource :athletes
+      resource :competition_editions
+      resource :competition_participations
+      resource :competition_incomes
     end
   }
   config.profile_menu = -> {
