@@ -15,5 +15,5 @@ bundle install
 
 bin/rails db:setup
 
-bin/rails serve
+bin/rails server
 ```
