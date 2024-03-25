@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_12_28_150722) do
+ActiveRecord::Schema[7.1].define(version: 2024_03_25_131236) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -42,6 +42,12 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_28_150722) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "athletes", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "comments", force: :cascade do |t|
     t.string "commentable_type"
     t.integer "commentable_id"
@@ -50,6 +56,29 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_28_150722) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_comments_on_user_id"
+  end
+
+  create_table "competition_editions", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "competition_incomes", force: :cascade do |t|
+    t.integer "amount"
+    t.bigint "competition_participation_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["competition_participation_id"], name: "index_competition_incomes_on_competition_participation_id"
+  end
+
+  create_table "competition_participations", force: :cascade do |t|
+    t.bigint "athlete_id", null: false
+    t.bigint "competition_edition_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["athlete_id"], name: "index_competition_participations_on_athlete_id"
+    t.index ["competition_edition_id"], name: "index_competition_participations_on_competition_edition_id"
   end
 
   create_table "course_links", force: :cascade do |t|
@@ -222,6 +251,9 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_28_150722) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "comments", "users"
+  add_foreign_key "competition_incomes", "competition_participations"
+  add_foreign_key "competition_participations", "athletes"
+  add_foreign_key "competition_participations", "competition_editions"
   add_foreign_key "fish", "users"
   add_foreign_key "people", "people"
   add_foreign_key "people", "users"
